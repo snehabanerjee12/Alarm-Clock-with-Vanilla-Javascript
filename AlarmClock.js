@@ -135,7 +135,7 @@ function setAlarm(){
 
     //checking if user forgot to enter some value
     if(selectedTime.includes("setHour")||selectedTime.includes("setMinute")||selectedTime.includes("setSecond")||selectedTime.includes("setamPm")){
-        alert(`Select select valid input`);
+        alert(`Select valid input`);
         return;
     }
     
