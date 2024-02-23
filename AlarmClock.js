@@ -1,5 +1,6 @@
 let alarmList = [];
 let alarmId=0;
+let duplicate=0;
 
 let selectMenu = document.querySelectorAll('select');
 let setAlarmBtn = document.getElementById("SetAlarmBtn");
@@ -129,6 +130,7 @@ setAlarmBtn.addEventListener("click",setAlarm);
 
 
 function setAlarm(){
+    duplicate = 0;
     let selectedTime = `${selectMenu[0].value}:${selectMenu[1].value}:${selectMenu[2].value} ${selectMenu[3].value}`;
 
     //checking if user forgot to enter some value
@@ -148,24 +150,30 @@ function setAlarm(){
         return;
     }
     
-    //checkingif the alarm already set
-    if(alarmList.includes(selectedTime)){
-        alert(`The alarm is already Set`);
+    //checking if the alarm already set
+    
+    for(let i=0;i<alarmList.length;i++){
+        let [almtm , alm] = alarmList[i].split(",");
+        if(almtm === selectedTime){
+           alert(`The alarm is already Set`);
+           duplicate = 1;
+            return;
+        }
     }
-
-    else{
-        // alarm set and added to the list and the alarm div
-        document.getElementById("alarmtitle").style.display ="block";
-        alarmId++;
-        document.querySelector(".alarmList").innerHTML+= 
-        `<div class="alarmItem" id="alarm${alarmId}">
-        <span id = "span${alarmId}">${selectedTime}</span>
-        <button class="deleteBtn" id="${alarmId}" onclick ="deleteAlarm(this.id)">Delete</button>
-        </div>`;
-        alarmList.push(selectedTime+","+alarmId);
-        alert(`Your alarm is set at ${selectedTime}`);
-    }
-
+        
+    if(duplicate === 0)
+    {
+            // alarm set and added to the list and the alarm div
+            document.getElementById("alarmtitle").style.display ="block";
+            alarmId++;
+            document.querySelector(".alarmList").innerHTML+= 
+            `<div class="alarmItem" id="alarm${alarmId}">
+            <span id = "span${alarmId}">${selectedTime}</span>
+            <button class="deleteBtn" id="${alarmId}" onclick ="deleteAlarm(this.id)">Delete</button>
+            </div>`;
+            alarmList.push(selectedTime+","+alarmId);
+            alert(`Your alarm is set at ${selectedTime}`);
+    }  
 }
 
 function deleteAlarm(alarm_id){
